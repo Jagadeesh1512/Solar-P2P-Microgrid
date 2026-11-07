@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "author": "Antigravity Microgrid Engineer",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "board-ssd1306", "id": "oled", "top": -160, "left": 10, "attrs": { "i2cAddress": "0x3c" } },
+    { "type": "wokwi-potentiometer", "id": "pot_solar", "top": 120, "left": -140, "attrs": { "label": "Solar Gen (kW)" } },
+    { "type": "wokwi-potentiometer", "id": "pot_load", "top": 200, "left": -140, "attrs": { "label": "Home Load (kW)" } },
+    { "type": "wokwi-potentiometer", "id": "pot_batt", "top": 280, "left": -140, "attrs": { "label": "Battery SoC (%)" } },
+    { "type": "wokwi-led", "id": "led_grid", "top": 100, "left": 180, "attrs": { "color": "green", "label": "Grid Relay" } },
+    { "type": "wokwi-led", "id": "led_batt", "top": 160, "left": 180, "attrs": { "color": "blue", "label": "Batt Relay" } },
+    { "type": "wokwi-resistor", "id": "r1", "top": 110, "left": 130, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r2", "top": 170, "left": 130, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+
+    [ "esp:GND.1", "oled:GND", "black", [ "v0" ] ],
+    [ "esp:3V3", "oled:VCC", "red", [ "v0" ] ],
+    [ "esp:22", "oled:SCL", "yellow", [ "v0" ] ],
+    [ "esp:21", "oled:SDA", "green", [ "v0" ] ],
+
+    [ "esp:3V3", "pot_solar:VCC", "red", [ "h-20" ] ],
+    [ "esp:GND.1", "pot_solar:GND", "black", [ "h-30" ] ],
+    [ "pot_solar:SIG", "esp:34", "orange", [ "h20" ] ],
+
+    [ "esp:3V3", "pot_load:VCC", "red", [ "h-20" ] ],
+    [ "esp:GND.1", "pot_load:GND", "black", [ "h-30" ] ],
+    [ "pot_load:SIG", "esp:35", "purple", [ "h20" ] ],
+
+    [ "esp:3V3", "pot_batt:VCC", "red", [ "h-20" ] ],
+    [ "esp:GND.1", "pot_batt:GND", "black", [ "h-30" ] ],
+    [ "pot_batt:SIG", "esp:32", "blue", [ "h20" ] ],
+
+    [ "esp:18", "r1:1", "green", [ "h10" ] ],
+    [ "r1:2", "led_grid:A", "green", [ "h10" ] ],
+    [ "led_grid:C", "esp:GND.2", "black", [ "h-10" ] ],
+
+    [ "esp:19", "r2:1", "blue", [ "h10" ] ],
+    [ "r2:2", "led_batt:A", "blue", [ "h10" ] ],
+    [ "led_batt:C", "esp:GND.2", "black", [ "h-10" ] ]
+  ],
+  "dependencies": {}
+}
